@@ -5,13 +5,11 @@ import Loader from "react-loader-spinner";
 import Logo from "../Logo";
 import { Container, Form, StyledLink, Input, Button } from "../../assets/css/style"
 
-export default function Cadastro(){
+export default function Login(){
     const navigate = useNavigate();
     const [disabledFields, setDisabledFields] = useState(false)
     const [formData, setFormData] = useState({
-        name: '',
         email: '',
-        image: '',
         password: ''
     });
 
@@ -23,13 +21,14 @@ export default function Cadastro(){
         e.preventDefault();
         setDisabledFields(true)
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', formData);
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', formData);
 
         promise.then(response => {
             console.log(response)
-            navigate('/')
+            navigate('/hoje')
         });
         promise.catch(error => {
+            console.log(error.response)
             if(error.response.data.details) alert(error.response.data.message + "\n" + error.response.data.details)
             else alert(error.response.data.message)
             setDisabledFields(false)
@@ -56,22 +55,6 @@ export default function Cadastro(){
                     placeholder="senha"
                     disabled={disabledFields}
                 />
-                <Input 
-                    type="text" 
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    name="name"
-                    placeholder="nome"
-                    disabled={disabledFields}
-                />
-                <Input 
-                    type="text" 
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    name="image"
-                    placeholder="foto"
-                    disabled={disabledFields}
-                />
                 <Button disabled={disabledFields}>
                     {disabledFields 
                         ?   <Loader
@@ -80,11 +63,11 @@ export default function Cadastro(){
                                 height={45}
                                 width={60}
                             /> 
-                        :   "Cadastrar"
+                        :   "Entrar"
                     }
                 </Button>
             </Form>
-            <StyledLink to="/">Já tem uma conta? Faça login!</StyledLink>
+            <StyledLink to="/cadastro">Não tem uma conta? Cadastre-se!</StyledLink>
         </Container>
     )
 }
