@@ -1,18 +1,20 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router';
 import Loader from "react-loader-spinner";
-import Logo from "../Logo";
-import { Container, Form, StyledLink, Input, Button } from "../../assets/css/style"
+import BigLogo from "../../BigLogo";
+import { Container, Form, StyledLink, Input, Button } from "../styles"
+import { UserContext } from "../../../context";
 
 export default function Login(){
     const navigate = useNavigate();
+    const { setUser } = useContext(UserContext)
     const [disabledFields, setDisabledFields] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
+    
     function handleInputChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -24,11 +26,10 @@ export default function Login(){
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', formData);
 
         promise.then(response => {
-            console.log(response)
+            setUser(response.data)
             navigate('/hoje')
         });
         promise.catch(error => {
-            console.log(error.response)
             if(error.response.data.details) alert(error.response.data.message + "\n" + error.response.data.details)
             else alert(error.response.data.message)
             setDisabledFields(false)
@@ -37,7 +38,7 @@ export default function Login(){
 
     return(
         <Container>
-            <Logo/>
+            <BigLogo/>
             <Form onSubmit={handleSignUp}>
                 <Input 
                     type="email"

@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from 'react-router';
 import Loader from "react-loader-spinner";
-import Logo from "../Logo";
-import { Container, Form, StyledLink, Input, Button } from "../../assets/css/style"
+import BigLogo from "../../BigLogo";
+import { Container, Form, StyledLink, Input, Button } from "../styles"
 
 export default function Cadastro(){
     const navigate = useNavigate();
@@ -26,7 +26,6 @@ export default function Cadastro(){
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', formData);
 
         promise.then(response => {
-            console.log(response)
             navigate('/')
         });
         promise.catch(error => {
@@ -38,7 +37,7 @@ export default function Cadastro(){
 
     return(
         <Container>
-            <Logo/>
+            <BigLogo/>
             <Form onSubmit={handleSignUp}>
                 <Input 
                     type="email"
