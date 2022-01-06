@@ -1,38 +1,54 @@
-import { useContext } from "react"
-import MiniLogo from "../../MiniLogo"
-import UserImage from "../../UserImage"
-import { Button, Container, Footer, Header, TodayButton } from "../styles"
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { useContext, useEffect, useState } from "react"
+import axios from "axios"
+import { Container, Title } from "../styles"
 import { UserContext } from "../../../context";
+import CreateHabit from "./CreateHabit"
+import Footer from "../Footer"
+import Header from "../Header";
+import Habit from "./Habit";
+import HabitContextProvider from "../../../context/newHabit";
 
 export default function Habits(){
     const { user } = useContext(UserContext)
-    const percentage = 66;
+    const [createHabit, setCreateHabit] = useState("")
+    const [habits, setHabits] = useState([])
+    const [reloadHabits, setReloadHabits] = useState(false)
+    const newHabit = <CreateHabit setReloadHabits={setReloadHabits} setCreateHabit={setCreateHabit}/>
+
+    useEffect(()=>{
+        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", {
+            headers: {
+              Authorization: `Bearer ${user.token}`
+            }
+        })
+        promise.then(response => {
+            setHabits(response.data)
+            setReloadHabits(false)
+        })
+    },[user.token, reloadHabits])
 
     return(
-        <Container>
-            <Header>
-                <MiniLogo/>
-                <UserImage img={user.image}/>
-            </Header>
-            <Footer>
-                <Button to="/habitos">Hábitos</Button>
-                <TodayButton to="/hoje">
-                    <CircularProgressbar 
-                    value={percentage} 
-                    text="Hoje" 
-                    background
-                    backgroundPadding={6}
-                    styles={buildStyles({
-                        backgroundColor:"#52B6FF",
-                        textColor: "#fff",
-                        pathColor: "#fff",
-                        trailColor: "transparent"
-                    })}
-                    />;
-                </TodayButton>
-                <Button to="/historico">Histórico</Button>
-            </Footer>
-        </Container>
+        <HabitContextProvider>
+            <Container>
+                <Header/>
+                <Title>
+                    <h2>Meus hábitos</h2>
+                    <button onClick={()=>setCreateHabit(newHabit)}>+</button>
+                </Title>
+
+                {createHabit}
+
+                {habits.length 
+                    ?   habits.map( habit =>  
+                            <Habit setReloadHabits={setReloadHabits} habit={habit} key={habit.id}/>
+                        )
+                    :   <p>
+                            Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                        </p>
+                } 
+                <Footer/>
+            </Container>
+        </HabitContextProvider>
+        
     )
 }

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router';
 import Loader from "react-loader-spinner";
-import BigLogo from "../../BigLogo";
+import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
 import { UserContext } from "../../../context";
 
