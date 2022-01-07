@@ -8,25 +8,34 @@ import { UserContext } from "../../../context/user";
 
 export default function Login(){
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext)
+    const { user, setUser } = useContext(UserContext)
     const [disabledFields, setDisabledFields] = useState(false)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     
+    if(user) {
+        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', {email:user.email, password:user.password});
+        promise.then(() => {
+            navigate('/hoje')
+        });
+    }
+
     function handleInputChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    function handleSignUp(e) {
+    function handleSignIn(e) {
         e.preventDefault();
         setDisabledFields(true)
 
         const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', formData);
 
         promise.then(response => {
-            setUser(response.data)
+            const user = response.data
+            localStorage.setItem("user", JSON.stringify(user))
+            setUser(user)
             navigate('/hoje')
         });
         promise.catch(error => {
@@ -39,7 +48,7 @@ export default function Login(){
     return(
         <Container>
             <BigLogo/>
-            <Form onSubmit={handleSignUp}>
+            <Form onSubmit={handleSignIn}>
                 <Input 
                     type="email"
                     value={formData.email}

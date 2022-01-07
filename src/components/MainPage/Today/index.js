@@ -1,4 +1,4 @@
-import { Container, Title } from "../styles"
+import { Container } from "../styles"
 import Footer from "../Footer";
 import Header from "../Header";
 import { useState, useContext, useEffect } from "react";
@@ -56,8 +56,6 @@ export default function Today(){
 
         promise.catch(error=> console.log(error.response))
     }
-
-    console.log(todayHabits)
 
     return(
         <Container>
