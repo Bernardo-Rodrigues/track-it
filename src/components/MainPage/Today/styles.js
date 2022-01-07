@@ -45,6 +45,7 @@ export const DayDetails = styled.div`
     h2{
         font-size: 23px;
         color: #126BA5;
+        font-weight:normal;
     }
 `
 export const Progress = styled.p`

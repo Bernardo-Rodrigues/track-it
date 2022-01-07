@@ -5,6 +5,7 @@ import SignIn from "./HomePage/SignIn"
 import Habits from "./MainPage/Habits"
 import Today from "./MainPage/Today"
 import UserContextProvider from "../context/user"
+import Historic from "./MainPage/Historic"
 
 export default function App(){
     return(
@@ -16,7 +17,7 @@ export default function App(){
                     <Route path="/cadastro" element={<SignUp/>}></Route>
                     <Route path="/habitos" element={<Habits />}></Route>
                     <Route path="/hoje" element={<Today/>}></Route>
-                    <Route path="/historico" element=""></Route>
+                    <Route path="/historico" element={<Historic/>}></Route>
                 </Routes>
             </BrowserRouter>    
         </UserContextProvider> 

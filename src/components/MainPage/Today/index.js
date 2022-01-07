@@ -1,4 +1,4 @@
-import { Container } from "../styles"
+import { Container, Title } from "../styles"
 import Footer from "../Footer";
 import Header from "../Header";
 import { useState, useContext, useEffect } from "react";
