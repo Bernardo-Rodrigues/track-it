@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import Loader from "react-loader-spinner";
 import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
-import { UserContext } from "../../../context";
+import { UserContext } from "../../../context/user";
 
 export default function Login(){
     const navigate = useNavigate();

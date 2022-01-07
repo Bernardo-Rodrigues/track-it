@@ -92,3 +92,9 @@ export const Button = styled.button`
     font-size: 16px;
     color: ${ ({cancel}) => cancel ? "#52B6FF" : "#fff"};
 `
+export const NoHabits = styled.p`
+    font-size: 18px;
+    line-height: 22px;
+    color: #666666;
+    margin-bottom:
+`

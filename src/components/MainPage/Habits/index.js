@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Container, Title } from "../styles"
-import { UserContext } from "../../../context";
+import { UserContext } from "../../../context/user";
 import CreateHabit from "./CreateHabit"
 import Footer from "../Footer"
 import Header from "../Header";
 import Habit from "./Habit";
 import HabitContextProvider from "../../../context/newHabit";
+import { NoHabits } from "./styles";
 
 export default function Habits(){
     const { user } = useContext(UserContext)
@@ -42,9 +43,9 @@ export default function Habits(){
                     ?   habits.map( habit =>  
                             <Habit setReloadHabits={setReloadHabits} habit={habit} key={habit.id}/>
                         )
-                    :   <p>
+                    :   <NoHabits>
                             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-                        </p>
+                        </NoHabits>
                 } 
                 <Footer/>
             </Container>

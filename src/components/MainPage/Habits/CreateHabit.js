@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Day,  HabitDays,  Button, Buttons, CreateHabitElement, HabitInput } from "./styles";
 import { HabitContext } from "../../../context/newHabit";
-import { UserContext } from "../../../context";
+import { UserContext } from "../../../context/user";
 import axios from "axios"
 import Loader from "react-loader-spinner";
 
@@ -23,9 +23,9 @@ export default function CreateHabit({setCreateHabit, setReloadHabits}){
             {headers: { Authorization: `Bearer ${user.token}` }
         });
 
-        promise.then(response => {
+        promise.then(() => {
             setHabitDays([])
-            setHabitName()
+            setHabitName("")
             setReloadHabits(true)
             setCreateHabit("")
         });

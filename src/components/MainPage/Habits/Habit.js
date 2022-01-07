@@ -2,7 +2,7 @@ import { Day, Delete, HabitDays, HabitElement, HabitName } from "./styles";
 import trash from "../../../assets/images/Group.png"
 import axios from "axios";
 import { useContext } from "react";
-import { UserContext } from "../../../context";
+import { UserContext } from "../../../context/user";
 
 export default function Habit({habit:{name, days, id}, setReloadHabits}){
     const { user } = useContext(UserContext)

@@ -4,11 +4,11 @@ import SignUp from "./HomePage/SignUp"
 import SignIn from "./HomePage/SignIn"
 import Habits from "./MainPage/Habits"
 import Today from "./MainPage/Today"
-import GlobalContext from "../context"
+import UserContextProvider from "../context/user"
 
 export default function App(){
     return(
-        <GlobalContext>
+        <UserContextProvider>
             <BrowserRouter>
                 <GlobalStyle/>
                 <Routes>
@@ -19,6 +19,6 @@ export default function App(){
                     <Route path="/historico" element=""></Route>
                 </Routes>
             </BrowserRouter>    
-        </GlobalContext> 
+        </UserContextProvider> 
     )
 }

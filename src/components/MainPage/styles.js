@@ -12,13 +12,6 @@ export const Container = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    p{
-        font-size: 18px;
-        line-height: 22px;
-        color: #666666;
-        margin-bottom:
-    }
 `
 export const HeaderElement = styled.header`
     position: fixed;

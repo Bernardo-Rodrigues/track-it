@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'react-circular-progressbar/dist/styles.css';
 
