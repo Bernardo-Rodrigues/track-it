@@ -31,7 +31,7 @@ export default function Login(){
         e.preventDefault();
         setDisabledFields(true)
 
-        SignIn(formData)
+        signIn(formData)
         .then(response => {
             const user = response.data
             localStorage.setItem("user", JSON.stringify(user))
