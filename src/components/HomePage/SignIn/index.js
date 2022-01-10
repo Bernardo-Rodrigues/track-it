@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router';
 import { UserContext } from "../../../context/user";
-import { SignIn } from "../../../services/Api";
+import { signIn } from "../../../services/api";
 import Loader from "react-loader-spinner";
 import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
@@ -16,7 +16,7 @@ export default function Login(){
     });
     
     if(user) {
-        SignIn({email:user.email, password:user.password})
+        signIn({email:user.email, password:user.password})
         .then(() => {
             navigate('/hoje')
         })

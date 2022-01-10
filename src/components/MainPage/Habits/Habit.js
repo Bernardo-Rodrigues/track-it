@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../../context/user";
-import { DeleteHabit } from "../../../services/Api";
+import { deleteHabit } from "../../../services/api";
 import trash from "../../../assets/images/Group.png"
 import { Day, Delete, HabitDays, HabitElement, HabitName } from "./styles";
 
@@ -13,7 +13,7 @@ export default function Habit({habit:{name, days, id}, setReloadHabits}){
         if(answer){
             const header = { headers: { Authorization: `Bearer ${user.token}` }}
 
-            DeleteHabit(id, header)
+            deleteHabit(id, header)
             .then(setReloadHabits(true))
         }
     }

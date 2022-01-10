@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { CheckHabit, TodayHabits, UncheckHabit } from "../../../services/Api";
+import { checkHabit, todayHabits, uncheckHabit } from "../../../services/api";
 import { UserContext } from "../../../context/user";
 import "dayjs/locale/pt-br"
 import dayjs from 'dayjs'
@@ -15,7 +15,7 @@ dayjs.locale('pt-br')
 
 export default function Today(){
     const { user, progress, setProgress } = useContext(UserContext)
-    const [todayHabits, setTodayHabits] = useState([])
+    const [todayHabitsArr, setTodayHabitsArr] = useState([])
     const [reloadHabits, setReloadHabits] = useState(false)
 
     let weekday = dayjs().format("dddd, DD/MM")
@@ -23,9 +23,9 @@ export default function Today(){
     useEffect(()=>{
         const header = { headers: { Authorization: `Bearer ${user.token}` }}
         
-        TodayHabits(header)
+        todayHabits(header)
         .then(response => {
-            setTodayHabits(response.data)
+            setTodayHabitsArr(response.data)
             setReloadHabits(false)
         })
     },[user.token, reloadHabits])
@@ -33,14 +33,14 @@ export default function Today(){
     useEffect(()=>{
         let cont = 0
         
-        todayHabits.forEach( habit => {
+        todayHabitsArr.forEach( habit => {
             if(habit.done) cont++
         })
 
-        setProgress(parseInt(cont/todayHabits.length*100))
-    },[todayHabits, setProgress])
+        setProgress(parseInt(cont/todayHabitsArr.length*100))
+    },[todayHabitsArr, setProgress])
 
-    function checkHabit(done, id){
+    function clickHabit(done, id){
         let promise
         const header = {
             headers: {
@@ -48,8 +48,8 @@ export default function Today(){
             }
         }
 
-        if(!done) promise = CheckHabit(id, header) 
-        else promise = UncheckHabit(id, header)
+        if(!done) promise = checkHabit(id, header) 
+        else promise = uncheckHabit(id, header)
 
         promise.then(() => setReloadHabits(true))
         promise.catch(error=> console.log(error.response))
@@ -65,8 +65,8 @@ export default function Today(){
                     :   <Progress>Nenhum hábito concluído ainda</Progress>
                 }
             </DayDetails>
-            {todayHabits.length 
-                    ?   todayHabits.map( habit =>
+            {todayHabitsArr.length 
+                    ?   todayHabitsArr.map( habit =>
                             <TodayHabit habit={habit} key={habit.id}>
                                 <h3>{habit.name}</h3>
                                 <p>
@@ -81,7 +81,7 @@ export default function Today(){
                                         {habit.highestSequence !== 1 ? " dias" : " dia"}
                                     </Sequence>
                                 </p>
-                                <Check done={habit.done} onClick={()=>checkHabit(habit.done, habit.id)}>
+                                <Check done={habit.done} onClick={()=>clickHabit(habit.done, habit.id)}>
                                     <img src={CheckIcon} alt="check"></img>
                                 </Check>
                             </TodayHabit>

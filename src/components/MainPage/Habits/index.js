@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../../../context/user";
 import HabitContextProvider from "../../../context/newHabit";
-import { ListHabits } from "../../../services/Api";
+import { listHabits } from "../../../services/api";
 import CreateHabit from "./CreateHabit"
 import Footer from "../Footer"
 import Header from "../Header";
@@ -19,7 +19,7 @@ export default function Habits(){
     useEffect(()=>{
         const header = { headers: { Authorization: `Bearer ${user.token}` }}
         
-        ListHabits(header)
+        listHabits(header)
         .then(response => {
             setHabits(response.data)
             setReloadHabits(false)

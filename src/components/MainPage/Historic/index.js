@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../context/user";
-import { History } from "../../../services/Api";
+import { history } from "../../../services/api";
 import dayjs from 'dayjs';
 import "dayjs/locale/pt-br"
 import Header from "../Header"
@@ -22,7 +22,7 @@ export default function Historic(){
     useEffect(()=>{
         const header = { headers: { Authorization: `Bearer ${user.token}` }}
 
-        History(header)
+        history(header)
         .then(response => {
             const days = response.data
             setDaysArr(days)

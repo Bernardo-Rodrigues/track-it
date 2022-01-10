@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router';
-import { SignUp } from "../../../services/Api";
+import { signUp } from "../../../services/api";
 import Loader from "react-loader-spinner";
 import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
@@ -23,7 +23,7 @@ export default function Cadastro(){
         e.preventDefault();
         setDisabledFields(true)
 
-        SignUp(formData)
+        signUp(formData)
         .then(() => {
             navigate('/')
         })

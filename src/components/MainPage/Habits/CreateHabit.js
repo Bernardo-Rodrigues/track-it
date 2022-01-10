@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { HabitContext } from "../../../context/newHabit";
 import { UserContext } from "../../../context/user";
-import { NewHabit } from "../../../services/Api";
+import { newHabit } from "../../../services/api";
 import Loader from "react-loader-spinner";
 import { Day,  HabitDays,  Button, Buttons, CreateHabitElement, HabitInput } from "./styles";
 
@@ -21,7 +21,7 @@ export default function CreateHabit({setCreateHabit, setReloadHabits}){
         const body = {name:habitName, days:habitDays}
         const header =  {headers: { Authorization: `Bearer ${user.token}` }}
 
-        NewHabit(body, header)
+        newHabit(body, header)
         .then(() => {
             setHabitDays([])
             setHabitName("")
