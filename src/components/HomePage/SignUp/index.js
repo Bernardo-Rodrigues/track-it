@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from 'react-router';
+import { SignUp } from "../../../services/Api";
 import Loader from "react-loader-spinner";
 import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
@@ -23,16 +23,15 @@ export default function Cadastro(){
         e.preventDefault();
         setDisabledFields(true)
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', formData);
-
-        promise.then(response => {
+        SignUp(formData)
+        .then(() => {
             navigate('/')
-        });
-        promise.catch(error => {
+        })
+        .catch(error => {
             if(error.response.data.details) alert(error.response.data.message + "\n" + error.response.data.details)
             else alert(error.response.data.message)
             setDisabledFields(false)
-        });
+        })
     }
 
     return(

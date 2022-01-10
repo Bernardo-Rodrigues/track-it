@@ -1,32 +1,30 @@
-import { Container } from "../styles"
-import Footer from "../Footer";
-import Header from "../Header";
 import { useState, useContext, useEffect } from "react";
+import { CheckHabit, TodayHabits, UncheckHabit } from "../../../services/Api";
 import { UserContext } from "../../../context/user";
-import axios from "axios";
-import { Check, DayDetails, Progress, Sequence, TodayHabit } from "./styles";
-import CheckIcon from "../../../assets/images/CheckIcon.png"
 import "dayjs/locale/pt-br"
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
+import Footer from "../Footer";
+import Header from "../Header";
+import CheckIcon from "../../../assets/images/CheckIcon.png"
+import { Container } from "../styles"
+import { Check, DayDetails, Progress, Sequence, TodayHabit } from "./styles";
+
 dayjs.extend(isoWeek)
 dayjs.locale('pt-br')
 
 export default function Today(){
-    const { user } = useContext(UserContext)
+    const { user, progress, setProgress } = useContext(UserContext)
     const [todayHabits, setTodayHabits] = useState([])
     const [reloadHabits, setReloadHabits] = useState(false)
-    const [progress, setProgress] = useState(0)
 
     let weekday = dayjs().format("dddd, DD/MM")
 
     useEffect(()=>{
-        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today", {
-            headers: {
-              Authorization: `Bearer ${user.token}`
-            }
-        })
-        promise.then(response => {
+        const header = { headers: { Authorization: `Bearer ${user.token}` }}
+        
+        TodayHabits(header)
+        .then(response => {
             setTodayHabits(response.data)
             setReloadHabits(false)
         })
@@ -40,7 +38,7 @@ export default function Today(){
         })
 
         setProgress(parseInt(cont/todayHabits.length*100))
-    },[todayHabits])
+    },[todayHabits, setProgress])
 
     function checkHabit(done, id){
         let promise
@@ -50,10 +48,10 @@ export default function Today(){
             }
         }
 
-        if(!done) promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`, {}, header) 
-        else promise = axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {}, header)
-        promise.then(() => setReloadHabits(true))
+        if(!done) promise = CheckHabit(id, header) 
+        else promise = UncheckHabit(id, header)
 
+        promise.then(() => setReloadHabits(true))
         promise.catch(error=> console.log(error.response))
     }
 
@@ -92,7 +90,7 @@ export default function Today(){
                             Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
                         </p>
                 } 
-            <Footer/>
+            <Footer progress={progress}/>
         </Container>
     )
 }

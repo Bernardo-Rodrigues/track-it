@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
-import { Day,  HabitDays,  Button, Buttons, CreateHabitElement, HabitInput } from "./styles";
 import { HabitContext } from "../../../context/newHabit";
 import { UserContext } from "../../../context/user";
-import axios from "axios"
+import { NewHabit } from "../../../services/Api";
 import Loader from "react-loader-spinner";
+import { Day,  HabitDays,  Button, Buttons, CreateHabitElement, HabitInput } from "./styles";
 
 export default function CreateHabit({setCreateHabit, setReloadHabits}){
     const { habitName, setHabitName, habitDays, setHabitDays } = useContext(HabitContext)
@@ -18,22 +18,20 @@ export default function CreateHabit({setCreateHabit, setReloadHabits}){
     function confirmHabit(){
         setDisabledFields(true)
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', 
-            {name:habitName, days:habitDays},
-            {headers: { Authorization: `Bearer ${user.token}` }
-        });
+        const body = {name:habitName, days:habitDays}
+        const header =  {headers: { Authorization: `Bearer ${user.token}` }}
 
-        promise.then(() => {
+        NewHabit(body, header)
+        .then(() => {
             setHabitDays([])
             setHabitName("")
             setReloadHabits(true)
             setCreateHabit("")
-        });
-        promise.catch(error => {
+        })
+        .catch(error => {
             alert(error.response.data.details)
             setDisabledFields(false)
         });
-
     }
 
     return(

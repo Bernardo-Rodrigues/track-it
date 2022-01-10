@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from 'react-router';
+import { UserContext } from "../../../context/user";
+import { SignIn } from "../../../services/Api";
 import Loader from "react-loader-spinner";
 import BigLogo from "../../Logos/BigLogo";
 import { Container, Form, StyledLink, Input, Button } from "../styles"
-import { UserContext } from "../../../context/user";
 
 export default function Login(){
     const navigate = useNavigate();
@@ -16,10 +16,11 @@ export default function Login(){
     });
     
     if(user) {
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', {email:user.email, password:user.password});
-        promise.then(() => {
+        SignIn({email:user.email, password:user.password})
+        .then(() => {
             navigate('/hoje')
-        });
+        })
+        .catch(error => console.log(error.response))
     }
 
     function handleInputChange(e) {
@@ -30,15 +31,14 @@ export default function Login(){
         e.preventDefault();
         setDisabledFields(true)
 
-        const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', formData);
-
-        promise.then(response => {
+        SignIn(formData)
+        .then(response => {
             const user = response.data
             localStorage.setItem("user", JSON.stringify(user))
             setUser(user)
             navigate('/hoje')
-        });
-        promise.catch(error => {
+        })
+        .catch(error => {
             if(error.response.data.details) alert(error.response.data.message + "\n" + error.response.data.details)
             else alert(error.response.data.message)
             setDisabledFields(false)

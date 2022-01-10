@@ -1,8 +1,8 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import { Button, FooterElement, TodayButton } from "./styles";
 
-export default function Footer(){
-    const percentage = 66;
+export default function Footer({progress}){
+    const percentage = progress;
     
     return(
         <FooterElement>

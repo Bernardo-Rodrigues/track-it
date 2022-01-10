@@ -1,28 +1,31 @@
-import { Container, Title } from "../styles"
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../../context/user";
+import { History } from "../../../services/Api";
+import dayjs from 'dayjs';
+import "dayjs/locale/pt-br"
 import Header from "../Header"
 import Footer from "../Footer"
 import Calendar from "react-calendar"
 import 'react-calendar/dist/Calendar.css';
-import dayjs from 'dayjs';
-import "dayjs/locale/pt-br"
-import axios from "axios";
-import { UserContext } from "../../../context/user";
-import { useContext, useEffect, useState } from "react";
+import { Container, Title } from "../styles"
+import { CalendarContainer, CloseDay, Date, Day, Done, Habits, HeaderElement } from "./styles";
+
 dayjs.locale("pt-br")
 
 export default function Historic(){
-    const { user } = useContext(UserContext)
+    const { user, progress } = useContext(UserContext)
     const [ daysComplete, setDaysComplete ] = useState([])
     const [ daysNotComplete, setDaysNotComplete ] = useState([])
+    const [ daysArr, setDaysArr] = useState([])
+    const [ selectedDay, setSelectedDay ] = useState()
 
     useEffect(()=>{
-        const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily", {
-            headers: {
-              Authorization: `Bearer ${user.token}`
-            }
-        })
-        promise.then(response => {
+        const header = { headers: { Authorization: `Bearer ${user.token}` }}
+
+        History(header)
+        .then(response => {
             const days = response.data
+            setDaysArr(days)
             let notComplete = []
             let complete = []
 
@@ -54,16 +57,35 @@ export default function Historic(){
         <Container>
             <Header/>
             <Title><h2>Histórico</h2></Title>
-            <Calendar
-                calendarType={"US"}
-                locale={"pt-br"}
-                formatDay ={(locale, date) => dayjs(date).format('DD')}
-                tileClassName={ ({ date }) => { 
-                    if(daysComplete.includes( dayjs(date).format("YYYY-MM-DD"))) return "complete"
-                    else if(daysNotComplete.includes( dayjs(date).format("YYYY-MM-DD"))) return "not-complete"
-                }}
-            />
-            <Footer/>
+            <CalendarContainer>
+                <Calendar
+                    calendarType={"US"}
+                    locale={"pt-br"}
+                    formatDay ={(locale, date) => dayjs(date).format('DD')}
+                    tileClassName={ ({ date }) => { 
+                        if(daysComplete.includes( dayjs(date).format("YYYY-MM-DD"))) return "complete"
+                        else if(daysNotComplete.includes( dayjs(date).format("YYYY-MM-DD"))) return "not-complete"
+                    }}
+                    onClickDay={(value, event) => {
+                        setSelectedDay(daysArr.find( day => day.day === dayjs(value).format("DD/MM/YYYY")))
+                    }}
+                />
+                {selectedDay && 
+                    <Day>
+                        <HeaderElement>
+                            <Date>{selectedDay.day}</Date>
+                            <CloseDay onClick={()=> setSelectedDay()}>X</CloseDay>
+                        </HeaderElement>
+                        <Habits>
+                            <h2>Hábitos:</h2>
+                            {selectedDay.habits.map( habit => 
+                                 <p key={habit.id}>{habit.name} - <Done done={habit.done}>{habit.done ? "Concluído" : "Não concluído"}</Done></p>
+                            )}
+                        </Habits>
+                    </Day>
+                } 
+            </CalendarContainer>
+            <Footer progress={progress}/>
         </Container>
     )
 }
