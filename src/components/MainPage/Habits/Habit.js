@@ -7,7 +7,7 @@ import { Day, Delete, HabitDays, HabitElement, HabitName } from "./styles";
 export default function Habit({habit:{name, days, id}, setReloadHabits}){
     const { user } = useContext(UserContext)
 
-    function deleteHabit(){
+    function clickDelete(){
         let answer = window.confirm("Excluir hábito?")
 
         if(answer){
@@ -21,7 +21,7 @@ export default function Habit({habit:{name, days, id}, setReloadHabits}){
     return(
         <HabitElement>
             <HabitName>{name}</HabitName>
-            <Delete onClick={deleteHabit}><img src={trash} alt="delete"></img></Delete>
+            <Delete onClick={clickDelete}><img src={trash} alt="delete"></img></Delete>
             <HabitDays>
                 <Day selected={days.includes(0)}>D</Day>
                 <Day selected={days.includes(1)}>S</Day>
