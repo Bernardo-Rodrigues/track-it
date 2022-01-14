@@ -31,7 +31,7 @@ The following tools and frameworks were used in the construction of the project:
   ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
   ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
   ![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
-   <img style='margin: 5px' src='https://img.shields.io/badge/Context-API-blue?style=for-the-badge&logo=appveyo'r>
+   <img style='margin: 5px' src='https://img.shields.io/badge/Context-API-blue?style=for-the-badge&logo=appveyor'>
    <img style='margin: 5px' src='https://img.shields.io/badge/React-Calendar-blue?style=for-the-badge&logo=appveyor'>
 
 
