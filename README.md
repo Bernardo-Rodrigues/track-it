@@ -2,6 +2,10 @@
 
 Application that allows you to create a personal account, add and delete custom habits for the days of the week, track daily habits and check the history of the days through a calendar.
 
+<div align='center'>
+  <img style='ustify-content: center' src='/src/assets/gif/trackit.gif' />
+</div>
+
 Try it out now at https://trackit-h3ap5u3sp-bernardo-rodrigues.vercel.app
 
 ## About
